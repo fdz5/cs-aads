@@ -4,6 +4,8 @@ import java.util.List;
 
 public interface ConvexHull {
 	
-	public List<Point2D> convexHull(List<Point2D> ps); 
+	public List<PolarPoint> convexHull(List<MyPoint> ps);
+
+    public List<PolarPoint> toPolar(List<MyPoint> ps, MyPoint p0);
 
 }
