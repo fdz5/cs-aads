@@ -1,16 +1,17 @@
 package test;
 
-import junit.framework.Assert;
+import java.util.ArrayList;
+import java.util.List;
+
 import main.ConvexHull;
 import main.ConvexHullSolver;
 import main.MyPoint;
 import main.PolarPoint;
+
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author fdziedzic
@@ -100,6 +101,74 @@ public class ConvexHullSolverTest {
         List<PolarPoint> convexHull = ch.convexHull(ps);
         Assert.assertNotNull(ps);
         Assert.assertEquals(8, convexHull.size());
+        printPointList(convexHull);
     }
+	
+    @Test
+    public void convexHullTest3() {
+        List<MyPoint> ps = new ArrayList<>();
+        ps.add(new MyPoint(7, 7));
+        ps.add(new MyPoint(7, -7));
+        ps.add(new MyPoint(-7, -7));
+        ps.add(new MyPoint(-7, 7));
+        ps.add(new MyPoint(9, 0));
+        ps.add(new MyPoint(-9, 0));
+        ps.add(new MyPoint(-9, 0));
+        ps.add(new MyPoint(0, 9));
+        ps.add(new MyPoint(0, -9));
+        ps.add(new MyPoint(0, 0));
+        ps.add(new MyPoint(1, 2));
+        ps.add(new MyPoint(-2, 1));
+        ps.add(new MyPoint(-1, -1));
+        ps.add(new MyPoint(3, 4));
+        ps.add(new MyPoint(4, 3));
+        ps.add(new MyPoint(-5, 4));
+        ps.add(new MyPoint(6, 5));
+        
+        List<MyPoint> result = new ArrayList<>();
+        result.add(new MyPoint(0, -9));
+        result.add(new MyPoint(7, -7));
+        result.add(new MyPoint(9, 0));
+        result.add(new MyPoint(7, 7));
+        result.add(new MyPoint(0, 9));
+        result.add(new MyPoint(-7, 7));
+        result.add(new MyPoint(-9, 0));
+        result.add(new MyPoint(-7, -7));
+
+        List<PolarPoint> convexHull = ch.convexHull(ps);
+        printPointList(convexHull);
+        
+        Assert.assertNotNull(ps);
+        Assert.assertEquals(8, convexHull.size());
+        Assert.assertEquals(result, convexHull);
+        
+    }
+    
+    @Test
+    public void convexHullTest4() {
+        List<MyPoint> ps = new ArrayList<>();
+        ps.add(new MyPoint(0, 0));
+        ps.add(new MyPoint(4, 0));
+        ps.add(new MyPoint(4, 4));
+        ps.add(new MyPoint(0, 4));
+        ps.add(new MyPoint(2, 2));
+        
+        List<MyPoint> result = new ArrayList<>();
+        result.add(new MyPoint(0, 0));
+        result.add(new MyPoint(4, 0));
+        result.add(new MyPoint(4, 4));
+        result.add(new MyPoint(0, 4));
+
+        List<PolarPoint> convexHull = ch.convexHull(ps);
+        Assert.assertNotNull(ps);
+        Assert.assertEquals(4, convexHull.size());
+        printPointList(convexHull);
+    }
+    
+	private void printPointList(List<PolarPoint> convexHull) {
+		for (PolarPoint p : convexHull) {
+        	System.out.println("Point (" + p.getPoint().getX() + ", " + p.getPoint().getY());
+        }
+	}
 
 }
