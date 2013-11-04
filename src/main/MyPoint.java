@@ -8,9 +8,17 @@ import java.awt.*;
  *         Time 00:05
  */
 public class MyPoint extends Point {
+	
+	private final int index;
+	
+	public MyPoint(int i, int x, int y) {
+		super(x, y);
+		index = i;
+	}
 
     public MyPoint(int x, int y) {
         super(x, y);
+        index = 0;
     }
 
     public PolarPoint toPolart(MyPoint p0) {
@@ -30,4 +38,13 @@ public class MyPoint extends Point {
         return fi;
     }
 
+	public int getIndex() {
+		return index;
+	}
+
+	@Override
+	public String toString() {
+		return "MyPoint [index=" + index + ", x=" + x + ", y=" + y + "]";
+	}
+	
 }

@@ -31,4 +31,9 @@ public class PolarPoint {
         return point;
     }
 
+	@Override
+	public String toString() {
+		return "PolarPoint [r=" + r + ", fi=" + fi + ", point=" + point + "]";
+	}
+
 }

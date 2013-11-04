@@ -15,7 +15,7 @@ public class ConvexHullSolver implements ConvexHull {
         stack = new Stack<>();
         MyPoint p0 = findStartPoint(ps);
         ps.remove(p0);
-
+        System.out.println("P0 " + p0);
         List<PolarPoint> polarPoints = toPolar(ps, p0);
 
         Collections.sort(polarPoints, new PolarPointComparator());

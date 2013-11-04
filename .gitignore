@@ -8,3 +8,8 @@
 # intellij
 cs-aads.iml
 .idea
+/bin
+
+# eclipse
+.classpath
+.project
