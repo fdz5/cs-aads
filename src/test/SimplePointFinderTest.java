@@ -140,7 +140,11 @@ public class SimplePointFinderTest {
     @Test
     public void findColinearNumTest() {
     	List<Point2D> ps = pf.parseCsv("colinear.csv");
-//    	pf.findColinearNum(ps, start);
+    	for (int i =0; i<ps.size(); i++) {
+    		int num = pf.findColinearNum(ps, ps.get(i));
+    		System.out.println(num);
+    	}
+    	
     }
     
 }

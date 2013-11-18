@@ -20,10 +20,12 @@ public class SimplePointFinder implements PointFinder {
 				* (b.getX() - c.getX()) + b.getX() * c.getY() - b.getY()
 				* c.getX();
 		
+		if (d < 0.0001 && d > -0.0001) {
+			return 0;
+		}
+			
 		if (d < 0)
 			return -1;
-		if (d == 0)
-			return 0;
 		return 1;
 	}
 
@@ -101,10 +103,12 @@ public class SimplePointFinder implements PointFinder {
 	}
 
 	@Override
-	public int findColinearNum(List<Segment> ps, Point2D start) {
+	public int findColinearNum(List<Point2D> ps, Point2D start) {
 		int num = 0;
-		for (Segment p : ps) {
-			if (findPoint(start, p.getStart(), p.getEnd()) == 0)
+		List<Segment> segs = makeSegment(ps);
+		System.out.println("num seg: " + segs.size());
+		for (Segment p : segs) {
+			if (findPoint(p.getStart(), p.getEnd(), start) == 0)
 				num++;
 		}
 		return num;
