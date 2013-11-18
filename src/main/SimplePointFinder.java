@@ -1,6 +1,9 @@
 package main;
 
+import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -95,6 +98,49 @@ public class SimplePointFinder implements PointFinder {
 			}
 		}
 		return count;
+	}
+
+	@Override
+	public int findColinearNum(List<Segment> ps, Point2D start) {
+		int num = 0;
+		for (Segment p : ps) {
+			if (findPoint(start, p.getStart(), p.getEnd()) == 0)
+				num++;
+		}
+		return num;
+	}
+	
+	private List<Segment> makeSegment(List<Point2D> ps) {
+		List<Segment> segmets = new ArrayList<>();
+		for (int i=0; i<ps.size(); i++) {
+			for (int j=i; j<ps.size(); j++) {
+				if (ps.get(i) != ps.get(j))
+					segmets.add(new Segment(ps.get(i), ps.get(j)));
+			}
+		}
+		return segmets;
+	}
+
+	@Override
+	public List<Point2D> parseCsv(String f) {
+		List<Point2D> ps = new ArrayList<>();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(f));
+			String line = br.readLine();
+			while (line != null) {
+				System.out.println(line);
+				System.out.println(ps.size());
+				int idx = Integer.parseInt(line.split(";")[0].trim());
+				float x = Float.parseFloat(line.split(";")[1].replace(",", ".").trim());
+				float y = Float.parseFloat(line.split(";")[2].replace(",", ".").trim());
+				Point2D p = new MyPoint(idx, x, y);
+				ps.add(p);
+				line = br.readLine();
+			}
+		} catch (Exception e) {
+			System.err.println("Error occured: " + e.getMessage());
+		}
+		return ps;
 	}
 
 }

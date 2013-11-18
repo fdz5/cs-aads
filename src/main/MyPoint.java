@@ -11,6 +11,12 @@ public class MyPoint extends Point {
 	
 	private final int index;
 	
+	public MyPoint(int i, float x, float y) {
+		super();
+		this.setLocation(x, y);
+		index = i;
+	}
+	
 	public MyPoint(int i, int x, int y) {
 		super(x, y);
 		index = i;
@@ -46,5 +52,5 @@ public class MyPoint extends Point {
 	public String toString() {
 		return "MyPoint [index=" + index + ", x=" + x + ", y=" + y + "]";
 	}
-	
+
 }

@@ -16,4 +16,8 @@ public interface PointFinder {
 	
 	public int countCrossings(Set<Point2D> pointSet);
 	
+	public int findColinearNum(List<Segment> ps, Point2D start);
+	
+	public List<Point2D> parseCsv(String f);
+	
 }

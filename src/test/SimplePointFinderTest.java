@@ -113,20 +113,34 @@ public class SimplePointFinderTest {
         Assert.assertEquals(-1, pf.areCrossed(a, c, b, d));
     }
 
+//    @Test
+//    public void countCrossingsTest() {
+//        Point2D a = new Point(0, 0);
+//        Point2D b = new Point(2, 0);
+//        Point2D c = new Point(3, 1);
+//        Point2D d = new Point(1, 2);
+//        Point2D e = new Point(-1, 1);
+//        Set<Point2D> pointSet = new HashSet();
+//        pointSet.add(a);
+//        pointSet.add(b);
+//        pointSet.add(c);
+//        pointSet.add(d);
+//        pointSet.add(e);
+//
+//        Assert.assertEquals(5, pf.countCrossings(pointSet));
+//    }
+    
     @Test
-    public void countCrossingsTest() {
-        Point2D a = new Point(0, 0);
-        Point2D b = new Point(2, 0);
-        Point2D c = new Point(3, 1);
-        Point2D d = new Point(1, 2);
-        Point2D e = new Point(-1, 1);
-        Set<Point2D> pointSet = new HashSet();
-        pointSet.add(a);
-        pointSet.add(b);
-        pointSet.add(c);
-        pointSet.add(d);
-        pointSet.add(e);
-
-        Assert.assertEquals(5, pf.countCrossings(pointSet));
+    public void parseCsvTest() {
+    	List<Point2D> ps = pf.parseCsv("colinear.csv");
+    	Assert.assertNotNull(ps);
+    	Assert.assertEquals(221, ps.size());
     }
+    
+    @Test
+    public void findColinearNumTest() {
+    	List<Point2D> ps = pf.parseCsv("colinear.csv");
+//    	pf.findColinearNum(ps, start);
+    }
+    
 }
