@@ -7,16 +7,15 @@ import java.awt.*;
  *         Date 29.10.13
  *         Time 00:05
  */
-public class MyPoint extends Point {
+public class MyPoint extends Point.Float {
 	
 	private final int index;
-	
-	public MyPoint(int i, float x, float y) {
-		super();
-		this.setLocation(x, y);
-		index = i;
-	}
-	
+
+    public MyPoint( int index, float x, float y) {
+        super(x, y);
+        this.index = index;
+    }
+
 	public MyPoint(int i, int x, int y) {
 		super(x, y);
 		index = i;
@@ -25,6 +24,10 @@ public class MyPoint extends Point {
     public MyPoint(int x, int y) {
         super(x, y);
         index = 0;
+    }
+
+    public MyPoint round(int d) {
+        return new MyPoint(index, (float)Math.round(x * d) / d, (float)Math.round(y * d) / d);
     }
 
     public PolarPoint toPolart(MyPoint p0) {

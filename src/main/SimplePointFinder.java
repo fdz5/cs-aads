@@ -1,14 +1,9 @@
 package main;
 
-import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class SimplePointFinder implements PointFinder {
 	
@@ -16,11 +11,12 @@ public class SimplePointFinder implements PointFinder {
 
 	@Override
 	public int findPoint(Point2D a, Point2D b, Point2D c) {
-		double d = a.getX() * (b.getY() - c.getY()) - a.getY()
-				* (b.getX() - c.getX()) + b.getX() * c.getY() - b.getY()
-				* c.getX();
-		
-		if (d < 0.0001 && d > -0.0001) {
+		double d = a.getX() * (b.getY() - c.getY())
+                - a.getY() * (b.getX() - c.getX())
+                + b.getX() * c.getY()
+                - b.getY() * c.getX();
+
+		if (d < 0.01 && d > -0.01) {
 			return 0;
 		}
 			
@@ -28,6 +24,10 @@ public class SimplePointFinder implements PointFinder {
 			return -1;
 		return 1;
 	}
+
+    private Point2D round(Point2D p) {
+        return ((MyPoint) p).round(1000);
+    }
 
 	@Override
 	public List<Set<Point2D>> separatePoints(Set<Point2D> pointSet, Point2D a,
@@ -83,57 +83,51 @@ public class SimplePointFinder implements PointFinder {
 	@Override
 	public int countCrossings(Set<Point2D> pointSet) {
 		int count = 0;
-		segments = new HashSet();
-		for (Point2D p : pointSet) {
-			for (Point2D inP : pointSet) {
-				if (!p.equals(inP)) {
-					segments.add(new Segment(p, inP));
-				}
-			}
-		}
-		for (Segment s : segments) {
-			for (Segment inS : segments) {
-				if (!s.equals(inS)) {
-					if (areCrossed(s.getStart(), s.getEnd(), inS.getStart(), inS.getEnd()) == 1)
+		List<Segment> sgs = new ArrayList<>(makeSegment(pointSet));
+		for (int i = 0; i < sgs.size(); i++) {
+			for (int j=i; j<sgs.size(); j++) {
+                Segment out = sgs.get(i);
+                Segment in = sgs.get(j);
+					if (areCrossed(out.getStart(), out.getEnd(), in.getStart(), in.getEnd()) == 1)
 						++count;
-				}
 			}
 		}
 		return count;
 	}
 
 	@Override
-	public int findColinearNum(List<Point2D> ps, Point2D start) {
+	public int findColinearNum(Set<Point2D> ps, Segment s) {
 		int num = 0;
-		List<Segment> segs = makeSegment(ps);
-		System.out.println("num seg: " + segs.size());
-		for (Segment p : segs) {
-			if (findPoint(p.getStart(), p.getEnd(), start) == 0)
-				num++;
-		}
+        for (Point2D p : ps) {
+            if (!s.getStart().equals(p) && !s.getEnd().equals(p))  {
+                if (findPoint(round(s.getStart()), round(s.getEnd()), round(p)) == 0)       {
+                    num++;
+                }
+            }
+        }
 		return num;
 	}
-	
-	private List<Segment> makeSegment(List<Point2D> ps) {
-		List<Segment> segmets = new ArrayList<>();
+
+    @Override
+	public Set<Segment> makeSegment(Set<Point2D> ps) {
+		Set<Segment> segments = new HashSet<>();
+        List<Point2D> psl = new ArrayList<>(ps);
 		for (int i=0; i<ps.size(); i++) {
 			for (int j=i; j<ps.size(); j++) {
-				if (ps.get(i) != ps.get(j))
-					segmets.add(new Segment(ps.get(i), ps.get(j)));
+				if (!psl.get(i).equals(psl.get(j)))
+					segments.add(new Segment(psl.get(i), psl.get(j)));
 			}
 		}
-		return segmets;
+		return segments;
 	}
 
 	@Override
-	public List<Point2D> parseCsv(String f) {
-		List<Point2D> ps = new ArrayList<>();
+	public Set<Point2D> parseCsv(String f) {
+        Set<Point2D> ps = new HashSet<>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(f));
 			String line = br.readLine();
 			while (line != null) {
-				System.out.println(line);
-				System.out.println(ps.size());
 				int idx = Integer.parseInt(line.split(";")[0].trim());
 				float x = Float.parseFloat(line.split(";")[1].replace(",", ".").trim());
 				float y = Float.parseFloat(line.split(";")[2].replace(",", ".").trim());

@@ -29,7 +29,7 @@ public class Segment {
 		result = prime * result + ((start == null) ? 0 : start.hashCode());
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

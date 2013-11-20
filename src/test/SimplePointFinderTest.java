@@ -1,6 +1,7 @@
 package test;
 
 import main.PointFinder;
+import main.Segment;
 import main.SimplePointFinder;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -8,9 +9,8 @@ import org.junit.Test;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 public class SimplePointFinderTest {
 
@@ -113,38 +113,46 @@ public class SimplePointFinderTest {
         Assert.assertEquals(-1, pf.areCrossed(a, c, b, d));
     }
 
-//    @Test
-//    public void countCrossingsTest() {
-//        Point2D a = new Point(0, 0);
-//        Point2D b = new Point(2, 0);
-//        Point2D c = new Point(3, 1);
-//        Point2D d = new Point(1, 2);
-//        Point2D e = new Point(-1, 1);
-//        Set<Point2D> pointSet = new HashSet();
-//        pointSet.add(a);
-//        pointSet.add(b);
-//        pointSet.add(c);
-//        pointSet.add(d);
-//        pointSet.add(e);
-//
-//        Assert.assertEquals(5, pf.countCrossings(pointSet));
-//    }
+    @Test
+    public void countCrossingsTest() {
+        Point2D a = new Point(0, 0);
+        Point2D b = new Point(2, 0);
+        Point2D c = new Point(3, 1);
+        Point2D d = new Point(1, 2);
+        Point2D e = new Point(-1, 1);
+        Set<Point2D> pointSet = new HashSet();
+        pointSet.add(a);
+        pointSet.add(b);
+        pointSet.add(c);
+        pointSet.add(d);
+        pointSet.add(e);
+
+        Assert.assertEquals(5, pf.countCrossings(pointSet));
+    }
     
     @Test
     public void parseCsvTest() {
-    	List<Point2D> ps = pf.parseCsv("colinear.csv");
+    	Set<Point2D> ps = pf.parseCsv("colinear.csv");
     	Assert.assertNotNull(ps);
     	Assert.assertEquals(221, ps.size());
     }
     
     @Test
     public void findColinearNumTest() {
-    	List<Point2D> ps = pf.parseCsv("colinear.csv");
-    	for (int i =0; i<ps.size(); i++) {
-    		int num = pf.findColinearNum(ps, ps.get(i));
-    		System.out.println(num);
-    	}
-    	
+    	Set<Point2D> ps = pf.parseCsv("colinear.csv");
+        Set<Segment> sgs = pf.makeSegment(ps);
+        Assert.assertNotNull(sgs);
+
+        List<Integer> res = new ArrayList<>();
+        for (Segment s : sgs) {
+            int num = pf.findColinearNum(ps, s);
+            res.add(num);
+        }
+        Collections.sort(res);
+
+        Assert.assertEquals(new Integer(42), res.get(res.size()-1));
+        System.out.println(res.get(0) + " --> " + res.get(res.size()-1));
+
     }
     
 }
