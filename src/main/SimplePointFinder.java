@@ -26,7 +26,7 @@ public class SimplePointFinder implements PointFinder {
 	}
 
     private Point2D round(Point2D p) {
-        return ((MyPoint) p).round(1000);
+        return ((MyPoint) p).round(100);
     }
 
 	@Override
@@ -99,10 +99,8 @@ public class SimplePointFinder implements PointFinder {
 	public int findColinearNum(Set<Point2D> ps, Segment s) {
 		int num = 0;
         for (Point2D p : ps) {
-            if (!s.getStart().equals(p) && !s.getEnd().equals(p))  {
-                if (findPoint(round(s.getStart()), round(s.getEnd()), round(p)) == 0)       {
-                    num++;
-                }
+            if (findPoint(round(s.getStart()), round(s.getEnd()), round(p)) == 0)       {
+                num++;
             }
         }
 		return num;
