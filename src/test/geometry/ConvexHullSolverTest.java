@@ -1,12 +1,12 @@
-package test;
+package test.geometry;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import main.ConvexHull;
-import main.ConvexHullSolver;
-import main.MyPoint;
-import main.PolarPoint;
+import main.geometry.ConvexHull;
+import main.geometry.ConvexHullSolver;
+import main.geometry.MyPoint;
+import main.geometry.PolarPoint;
 
 import org.junit.After;
 import org.junit.Assert;

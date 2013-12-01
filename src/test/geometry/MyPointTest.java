@@ -1,8 +1,8 @@
-package test;
+package test.geometry;
 
 import junit.framework.Assert;
-import main.MyPoint;
-import main.PolarPoint;
+import main.geometry.MyPoint;
+import main.geometry.PolarPoint;
 import org.junit.Test;
 
 import java.text.DecimalFormat;

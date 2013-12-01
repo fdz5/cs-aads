@@ -1,16 +1,19 @@
 package main.graph;
 
-public class AbstractEdge<N, E> {
+public class AbstractEdge<E> {
 	
-	private E edge;
-	private N start;
-	private N end;
+	private final E edge;
 
-	public AbstractEdge(E edge, N start, N end) {
-		super();
+	public AbstractEdge(E edge) {
 		this.edge = edge;
-		this.start = start;
-		this.end = end;
 	}
+
+    public AbstractEdge copy() {
+        return new AbstractEdge<E>(edge);
+    }
+
+    public E getEdge() {
+        return edge;
+    }
 
 }

@@ -1,8 +1,8 @@
-package test;
+package test.geometry;
 
-import main.PointFinder;
-import main.Segment;
-import main.SimplePointFinder;
+import main.geometry.PointFinder;
+import main.geometry.Segment;
+import main.geometry.SimplePointFinder;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;

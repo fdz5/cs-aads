@@ -1,6 +1,7 @@
 package main.graph;
 
 import java.util.List;
+import java.util.Set;
 
 public interface Graph<N, E> {
 
@@ -23,11 +24,11 @@ public interface Graph<N, E> {
 
 	public void addEdge(E e, N n1, N n2);
 
-	public void deleteEdge(E e);
+	public void deleteEdge(N n1, N n2);
 
-	public List<N> getNeighbourVertices(N n);
+	public Set<N> getNeighboringNodes(N n);
 
-	public List<E> getNeighbourEdges(N n);
+	public Set<E> getNeighboringEdges(N n);
 
 	public boolean findNode(N n);
 
@@ -37,7 +38,7 @@ public interface Graph<N, E> {
 
 	public int countNodes();
 
-	public int countVertices();
+	public int countEdges();
 
 	public boolean areNeighbours(N n1, N n2);
 
