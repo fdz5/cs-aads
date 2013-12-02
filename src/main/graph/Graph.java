@@ -24,9 +24,13 @@ public interface Graph<N, E> {
 
 	public void addEdge(E e, N n1, N n2);
 
-	public void deleteEdge(N n1, N n2);
+	public void deleteEdge(E e);
 
 	public Set<N> getNeighboringNodes(N n);
+
+    public Set<N> getNextNodes(N n);
+
+    public Set<N> getPreviousNodes(N n);
 
 	public Set<E> getNeighboringEdges(N n);
 
@@ -34,7 +38,7 @@ public interface Graph<N, E> {
 
 	public boolean findEdge(E e);
 
-	public List<N> findEnds(E n);
+	public List<N> findEnds(E e);
 
 	public int countNodes();
 
