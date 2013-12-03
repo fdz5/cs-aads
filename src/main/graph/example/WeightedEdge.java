@@ -5,11 +5,11 @@ package main.graph.example;
  * Date: 02.12.13
  * Time: 00:00
  */
-public class WeightEdge {
+public class WeightedEdge {
 
     private final int weight;
 
-    public WeightEdge(int weight) {
+    public WeightedEdge(int weight) {
         this.weight = weight;
     }
 

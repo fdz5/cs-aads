@@ -5,6 +5,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Adjacency matrix implementation of the Graph interface.
+ * Performance is really poor...
+ *
+ * @param <N> Node class (nodes must be unique in term of equals method)
+ * @param <E> Edge class (edges must be unique in term of equals method)
+ * @author Filip Dziedzic
+ */
 public class MatrixGraph<N, E> implements Graph<N, E> {
 
     private AbstractEdge<E>[][] adjMatrix;
@@ -127,12 +135,12 @@ public class MatrixGraph<N, E> implements Graph<N, E> {
     }
 
     @Override
-    public boolean findNode(N n) {
+    public boolean containsNose(N n) {
         return nodes.contains(n);
     }
 
     @Override
-    public boolean findEdge(E e) {
+    public boolean containsEdge(E e) {
         return edges.contains(e);
     }
 

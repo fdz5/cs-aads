@@ -7,12 +7,12 @@ package main.graph;
  */
 public class NodeEdge<N, E> {
 
-    private final E edge;
     private final N node;
+    private final E edge;
 
-    public NodeEdge(E Edge, N node) {
-        this.edge = Edge;
+    public NodeEdge(N node, E Edge) {
         this.node = node;
+        this.edge = Edge;
     }
 
     public E getEdge() {

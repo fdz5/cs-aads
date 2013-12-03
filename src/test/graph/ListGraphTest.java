@@ -1,25 +1,25 @@
 package test.graph;
 
 import main.graph.Graph;
+import main.graph.ListGraph;
 import main.graph.MatrixGraph;
 import main.graph.example.LabeledNode;
 import main.graph.example.WeightedEdge;
 import org.junit.Assert;
-import org.junit.Test;
 import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * User: filip
  * Date: 01.12.13
  * Time: 23:11
  */
-public class MatrixGraphTest {
+public class ListGraphTest {
 
-    private Graph<LabeledNode, WeightedEdge> g = new MatrixGraph();
+    private Graph<LabeledNode, WeightedEdge> g = new ListGraph();
     private LabeledNode n1;
     private LabeledNode n2;
     private LabeledNode n3;
