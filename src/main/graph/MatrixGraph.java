@@ -1,9 +1,6 @@
 package main.graph;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Adjacency matrix implementation of the Graph interface.
@@ -176,7 +173,8 @@ public class MatrixGraph<N, E> implements Graph<N, E> {
         for (int i = 0; i < adjMatrix.length; i++) {
             for (int j = 0; j < adjMatrix.length; j++) {
                 if (adjMatrix[i][j] != null)
-                    sum++;
+                    for (E e : adjMatrix[i][j].getEdges())
+                        sum++;
             }
         }
         return sum;
@@ -185,6 +183,34 @@ public class MatrixGraph<N, E> implements Graph<N, E> {
     @Override
     public boolean areNeighbours(N n1, N n2) {
         return (adjMatrix[id(n1)][id(n2)] != null || adjMatrix[id(n2)][id(n1)] != null);
+    }
+
+    @Override
+    public Set<NodeEdge<N, E>> getNextNodeEdges(N n) {
+        Set<NodeEdge<N, E>> nexts = new HashSet<>();
+        for (int i = 0; i < adjMatrix.length; i++) {
+            for (int j = 0; j < adjMatrix.length; j++) {
+                if (adjMatrix[i][j] != null) {
+                    N f1 = nodes.get(i);
+                    N f2 = nodes.get(j);
+                    if (f1.equals(n)) {
+                        E shortest = getShortest(adjMatrix[i][j].getEdges());
+                        nexts.add(new NodeEdge<>(f2, shortest));
+                    }
+                }
+            }
+        }
+        return nexts;
+    }
+
+    private E getShortest(List<E> edges) {
+        PriorityQueue<E> queue = new PriorityQueue<>(edges);
+        return queue.peek();
+    }
+
+    @Override
+    public Set<N> getNodes() {
+        return new HashSet<>(nodes);
     }
 
 

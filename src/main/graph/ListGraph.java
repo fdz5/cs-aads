@@ -11,7 +11,7 @@ import java.util.*;
  */
 public class ListGraph<N, E> implements Graph<N, E> {
 
-    Map<N, AbstractNode> graph;
+    Map<N, AbstractNode<N, E>> graph;
     Map<E, N> edge2StNode;
 
     public ListGraph() {
@@ -23,7 +23,7 @@ public class ListGraph<N, E> implements Graph<N, E> {
     public void addNode(N n) {
         if (graph.containsKey(n))
             throw new IllegalArgumentException("Node already exists");
-        AbstractNode an = new AbstractNode(n);
+        AbstractNode<N, E> an = new AbstractNode(n);
         graph.put(n, an);
     }
 
@@ -42,7 +42,7 @@ public class ListGraph<N, E> implements Graph<N, E> {
     public void addEdge(E e, N n1, N n2) {
         if (edge2StNode.containsKey(e))
             throw new IllegalArgumentException("Edge already exists in the graph");
-        AbstractNode<N, E> an = new AbstractNode<>(n1);
+        AbstractNode<N, E> an = graph.get(n1);
         an.addNextNode(n2, e);
         edge2StNode.put(e, n1);
         graph.put(n1, an);
@@ -71,18 +71,22 @@ public class ListGraph<N, E> implements Graph<N, E> {
     public Set<N> getNextNodes(N n) {
         if (!graph.containsKey(n))
             throw new IllegalArgumentException("Node does not exists in grap");
-        return new HashSet<N>(graph.get(n).getNexts());
+        HashSet<N> nexts = new HashSet<>();
+        for (NodeEdge<N, E> ne : graph.get(n).getNexts()) {
+            nexts.add(ne.getNode());
+        }
+        return new HashSet<>(nexts);
     }
 
     @Override
     public Set<N> getPreviousNodes(N n) {
         if (!graph.containsKey(n))
             throw new IllegalArgumentException("Node does not exists in grap");
-        Iterator<AbstractNode> iter = graph.values().iterator();
+        Iterator<AbstractNode<N, E>> iter = graph.values().iterator();
         Set<N> neighbours = new HashSet<>();
         while (iter.hasNext()) {
             AbstractNode<N, E> an = iter.next();
-            for (NodeEdge ne : an.getNexts()) {
+            for (NodeEdge<N, E> ne : an.getNexts()) {
                 if (ne.getNode().equals(n))
                     neighbours.add(an.getNode());
             }
@@ -138,6 +142,16 @@ public class ListGraph<N, E> implements Graph<N, E> {
         if (!graph.containsKey(n1) || !graph.containsKey(n2))
             throw new IllegalArgumentException("Both nodes must exist in graph");
         return isNext(n1, n2) || isNext(n2, n1);
+    }
+
+    @Override
+    public Set<NodeEdge<N, E>> getNextNodeEdges(N n) {
+        return new HashSet<>(graph.get(n).getNexts());
+    }
+
+    @Override
+    public Set<N> getNodes() {
+        return this.graph.keySet();
     }
 
     private boolean isNext(N n1, N n2) {

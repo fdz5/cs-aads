@@ -16,4 +16,11 @@ public class LabeledNode {
     public String getLabel() {
         return label;
     }
+
+    @Override
+    public String toString() {
+        return "LabeledNode{" +
+                "label='" + label + '\'' +
+                '}';
+    }
 }

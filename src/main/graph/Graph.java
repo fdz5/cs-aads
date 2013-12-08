@@ -119,4 +119,8 @@ public interface Graph<N, E> {
      */
     public boolean areNeighbours(N n1, N n2);
 
+    public Set<NodeEdge<N, E>> getNextNodeEdges(N n);
+
+    public Set<N> getNodes();
+
 }

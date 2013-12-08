@@ -3,8 +3,8 @@ package test.graph;
 import main.graph.Graph;
 import main.graph.ListGraph;
 import main.graph.MatrixGraph;
+import main.graph.example.IntegerWeightedEdge;
 import main.graph.example.LabeledNode;
-import main.graph.example.WeightedEdge;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,29 +19,31 @@ import java.util.List;
  */
 public class ListGraphTest {
 
-    private Graph<LabeledNode, WeightedEdge> g = new ListGraph();
+    private Graph<LabeledNode, IntegerWeightedEdge> g = new ListGraph();
     private LabeledNode n1;
     private LabeledNode n2;
     private LabeledNode n3;
     private LabeledNode n4;
 
-    private WeightedEdge e1;
-    private WeightedEdge e2;
-    private WeightedEdge e3;
-    private WeightedEdge e4;
+    private IntegerWeightedEdge e1;
+    private IntegerWeightedEdge e2;
+    private IntegerWeightedEdge e3;
+    private IntegerWeightedEdge e4;
+    private IntegerWeightedEdge e5;
 
     @Before
     public void init() {
-        g = new MatrixGraph();
+        g = new MatrixGraph<>();
         n1 = new LabeledNode("Node A");
         n2 = new LabeledNode("Node B");
         n3 = new LabeledNode("Node C");
         n4 = new LabeledNode("Node D");
 
-        e1 = new WeightedEdge(1);
-        e2 = new WeightedEdge(2);
-        e3 = new WeightedEdge(3);
-        e4 = new WeightedEdge(4);
+        e1 = new IntegerWeightedEdge(1);
+        e2 = new IntegerWeightedEdge(2);
+        e3 = new IntegerWeightedEdge(3);
+        e4 = new IntegerWeightedEdge(4);
+        e5 = new IntegerWeightedEdge(5);
     }
 
     @Test
@@ -63,8 +65,10 @@ public class ListGraphTest {
 
         g.addEdge(e1, n1, n2);
         g.addEdge(e2, n2, n3);
-
         Assert.assertEquals(2, g.countEdges());
+
+        g.addEdge(e3, n1, n2);
+        Assert.assertEquals(3, g.countEdges());
     }
 
     @Test
@@ -176,10 +180,10 @@ public class ListGraphTest {
     @Test
     public void loadTest() {
         List<LabeledNode> nodes = new ArrayList<>();
-        List<WeightedEdge> edges = new ArrayList<>();
+        List<IntegerWeightedEdge> edges = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             LabeledNode n = new LabeledNode(new Integer(i).toString());
-            WeightedEdge e = new WeightedEdge(i);
+            IntegerWeightedEdge e = new IntegerWeightedEdge(i);
             g.addNode(n);
             nodes.add(n);
             edges.add(e);
@@ -187,7 +191,7 @@ public class ListGraphTest {
         for (int i = 0; i < 99; i++) {
             LabeledNode n1 = nodes.get(i);
             LabeledNode n2 = nodes.get(i + 1);
-            WeightedEdge e = edges.get(i);
+            IntegerWeightedEdge e = edges.get(i);
             g.addEdge(e, n1, n2);
         }
         Assert.assertEquals(true, g.containsEdge(edges.get(30)));
