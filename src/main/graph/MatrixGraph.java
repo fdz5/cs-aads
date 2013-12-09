@@ -1,5 +1,7 @@
 package main.graph;
 
+import main.graph.example.LabeledNode;
+
 import java.util.*;
 
 /**
@@ -20,6 +22,16 @@ public class MatrixGraph<N, E> implements Graph<N, E> {
         adjMatrix = new AbstractEdge[0][0];
         nodes = new ArrayList<>();
         edges = new HashSet<>();
+    }
+
+    @Override
+    public void build(int[][] edges) {
+//        for (int i=0; i<edges.length; i++) {
+//            for (int j=0; j<edges[i].length; j++) {
+//                LabeledNode n = new LabeledNode(String.valueOf(i));
+//            }
+//        }
+//        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
@@ -173,7 +185,7 @@ public class MatrixGraph<N, E> implements Graph<N, E> {
         for (int i = 0; i < adjMatrix.length; i++) {
             for (int j = 0; j < adjMatrix.length; j++) {
                 if (adjMatrix[i][j] != null)
-                    for (E e : adjMatrix[i][j].getEdges())
+                    for (E ignored : adjMatrix[i][j].getEdges())
                         sum++;
             }
         }
@@ -216,18 +228,16 @@ public class MatrixGraph<N, E> implements Graph<N, E> {
 
     private void enlarge() {
         int size = adjMatrix.length + 1;
-        AbstractEdge[][] target = new AbstractEdge[size][size];
+        AbstractEdge<E>[][] target = new AbstractEdge[size][size];
         for (int i = 0; i < adjMatrix.length; i++) {
-            for (int j = 0; j < adjMatrix.length; j++) {
-                target[i][j] = adjMatrix[i][j];
-            }
+            System.arraycopy(adjMatrix[i], 0, target[i], 0, adjMatrix.length);
         }
         adjMatrix = target;
     }
 
     private void reduce(int del) {
         int size = adjMatrix.length - 1;
-        AbstractEdge[][] target = new AbstractEdge[size][size];
+        AbstractEdge<E>[][] target = new AbstractEdge[size][size];
         int p = 0;
         for (int i = 0; i < adjMatrix.length; ++i) {
             if (i == del)

@@ -5,10 +5,14 @@ import main.graph.Graph;
 import main.graph.ListGraph;
 import main.graph.MatrixGraph;
 import main.graph.algorithms.Dijkstra;
-import main.graph.example.IntegerWeightedEdge;
+import main.graph.example.DoubleWeightedEdge;
 import main.graph.example.LabeledNode;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.*;
 
 /**
  * User: filip
@@ -18,7 +22,7 @@ import org.junit.Test;
 public class DijkstraTest {
 
     private Dijkstra dijkstra;
-    private Graph g;
+    private Graph<LabeledNode, DoubleWeightedEdge> g;
 
     private LabeledNode n1;
     private LabeledNode n2;
@@ -27,18 +31,18 @@ public class DijkstraTest {
     private LabeledNode n5;
     private LabeledNode n6;
 
-    private IntegerWeightedEdge e1;
-    private IntegerWeightedEdge e2;
-    private IntegerWeightedEdge e3;
-    private IntegerWeightedEdge e4;
-    private IntegerWeightedEdge e5;
-    private IntegerWeightedEdge e6;
-    private IntegerWeightedEdge e7;
-    private IntegerWeightedEdge e8;
-    private IntegerWeightedEdge e9;
-    private IntegerWeightedEdge e10;
-    private IntegerWeightedEdge e11;
-    private IntegerWeightedEdge e12;
+    private DoubleWeightedEdge e1;
+    private DoubleWeightedEdge e2;
+    private DoubleWeightedEdge e3;
+    private DoubleWeightedEdge e4;
+    private DoubleWeightedEdge e5;
+    private DoubleWeightedEdge e6;
+    private DoubleWeightedEdge e7;
+    private DoubleWeightedEdge e8;
+    private DoubleWeightedEdge e9;
+    private DoubleWeightedEdge e10;
+    private DoubleWeightedEdge e11;
+    private DoubleWeightedEdge e12;
 
     @Before
     public void init() {
@@ -50,18 +54,18 @@ public class DijkstraTest {
         n5 = new LabeledNode("Node 5");
         n6 = new LabeledNode("Node 6");
 
-        e1 = new IntegerWeightedEdge(14);
-        e2 = new IntegerWeightedEdge(7);
-        e3 = new IntegerWeightedEdge(15);
-        e4 = new IntegerWeightedEdge(6);
-        e5 = new IntegerWeightedEdge(9);
-        e6 = new IntegerWeightedEdge(2);
-        e7 = new IntegerWeightedEdge(8);
-        e8 = new IntegerWeightedEdge(10);
-        e9 = new IntegerWeightedEdge(11);
-        e10 = new IntegerWeightedEdge(5);
-        e11 = new IntegerWeightedEdge(3);
-        e12 = new IntegerWeightedEdge(12);
+        e1 = new DoubleWeightedEdge(14.0);
+        e2 = new DoubleWeightedEdge(7.0);
+        e3 = new DoubleWeightedEdge(15.0);
+        e4 = new DoubleWeightedEdge(6.0);
+        e5 = new DoubleWeightedEdge(9.0);
+        e6 = new DoubleWeightedEdge(2.0);
+        e7 = new DoubleWeightedEdge(8.0);
+        e8 = new DoubleWeightedEdge(10.0);
+        e9 = new DoubleWeightedEdge(11.0);
+        e10 = new DoubleWeightedEdge(5.0);
+        e11 = new DoubleWeightedEdge(3.0);
+        e12 = new DoubleWeightedEdge(12.0);
 
         g.addNode(n1);
         g.addNode(n2);
@@ -85,27 +89,58 @@ public class DijkstraTest {
 
         g.addEdge(e4, n4, n5);
 
-        dijkstra = new Dijkstra(g, n1, n5);
+        dijkstra = new Dijkstra(g);
     }
 
     @Test
     public void dijkstraTest() {
-        Assert.assertEquals(19, dijkstra.run());
+        Assert.assertEquals(19.0, dijkstra.init(n1, n5));
     }
 
     @Test
     public void dijkstraTest2() {
         g.addEdge(e12, n1, n5);
-        dijkstra = new Dijkstra(g, n1, n5);
-        Assert.assertEquals(12, dijkstra.run());
+        dijkstra = new Dijkstra(g);
+        Assert.assertEquals(12.0, dijkstra.init(n1, n5));
     }
 
     @Test
     public void multipleEdgesTest() {
         g.addEdge(e11, n6, n5);
         g.addEdge(e10, n6, n5);
-        dijkstra = new Dijkstra(g, n1, n5);
-        Assert.assertEquals(14, dijkstra.run());
+        dijkstra = new Dijkstra(g);
+        Assert.assertEquals(14.0, dijkstra.init(n1, n5));
+    }
+
+    @Test
+    public void read() {
+        Graph<LabeledNode, DoubleWeightedEdge> g = new MatrixGraph<>();
+        Map<Integer, LabeledNode> nodeMap = new HashMap<>();
+        for (int i=0; i<100; i++) {
+            LabeledNode node = new LabeledNode(String.valueOf(i));
+            g.addNode(node);
+            nodeMap.put(i, node);
+        }
+        Set<Integer> nodes = new HashSet<>();
+        try {
+            Scanner sc = new Scanner(new FileInputStream("graf1.txt"));
+            while (sc.hasNext()) {
+                int i = sc.nextInt();
+                nodes.add(i);
+                int j = sc.nextInt();
+                nodes.add(j);
+                double w = Double.parseDouble(sc.next());
+                g.addEdge(new DoubleWeightedEdge(w), nodeMap.get(i), nodeMap.get(j));
+//                System.out.println(i + " " + j + " " + w);
+            }
+            Assert.assertEquals(100, g.countNodes());
+            System.out.println("Numer of edges: " + g.countEdges());
+            Dijkstra<LabeledNode> dijkstra = new Dijkstra<LabeledNode>(g);
+            dijkstra.init(nodeMap.get(1), nodeMap.get(99));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
     }
 
 }

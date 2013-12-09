@@ -20,10 +20,15 @@ public class ListGraph<N, E> implements Graph<N, E> {
     }
 
     @Override
+    public void build(int[][] edges) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public void addNode(N n) {
         if (graph.containsKey(n))
             throw new IllegalArgumentException("Node already exists");
-        AbstractNode<N, E> an = new AbstractNode(n);
+        AbstractNode<N, E> an = new AbstractNode<>(n);
         graph.put(n, an);
     }
 
@@ -32,7 +37,7 @@ public class ListGraph<N, E> implements Graph<N, E> {
         if (!graph.containsKey(n))
             throw new IllegalArgumentException("Node does not exist");
         AbstractNode<N, E> an = graph.get(n);
-        for (NodeEdge ne : an.getNexts()) {
+        for (NodeEdge<N, E> ne : an.getNexts()) {
             edge2StNode.remove(ne.getEdge());
         }
         graph.remove(n);

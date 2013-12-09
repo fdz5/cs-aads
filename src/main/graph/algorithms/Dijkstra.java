@@ -2,7 +2,7 @@ package main.graph.algorithms;
 
 import main.graph.Graph;
 import main.graph.NodeEdge;
-import main.graph.example.IntegerWeightedEdge;
+import main.graph.example.DoubleWeightedEdge;
 
 import java.util.*;
 
@@ -15,48 +15,55 @@ public class Dijkstra<N> {
 
     private PriorityQueue<DijkstraNode<N>> unvisited;
     private Map<N, DijkstraNode<N>> all;
-    private final Graph<N, IntegerWeightedEdge> graph;
+    private final Graph<N, DoubleWeightedEdge> graph;
     private DijkstraNode<N> current;
+    private N from;
     private N to;
 
-    public Dijkstra(Graph<N, IntegerWeightedEdge> g, N from, N to) {
+    public Dijkstra(Graph<N, DoubleWeightedEdge> g) {
         graph = g;
+    }
+
+    public double init(N from, N to) {
+        this.from = from;
         this.to = to;
         Set<DijkstraNode<N>> dijkstraNodes = new HashSet<>();
         all = new HashMap<>();
-        for (N n : g.getNodes()) {
+        for (N n : graph.getNodes()) {
             if (n.equals(from)) {
                 DijkstraNode<N> dijkstraNode = new DijkstraNode(n, 0);
                 dijkstraNodes.add(dijkstraNode);
                 all.put(n, dijkstraNode);
                 current = dijkstraNode;
             } else {
-                DijkstraNode<N> dijkstraNode = new DijkstraNode(n, Integer.MAX_VALUE);
+                DijkstraNode<N> dijkstraNode = new DijkstraNode(n, Double.POSITIVE_INFINITY);
                 dijkstraNodes.add(dijkstraNode);
                 all.put(n, dijkstraNode);
             }
         }
         unvisited = new PriorityQueue<>(dijkstraNodes);
+        return run();
     }
 
-    public int run() {
+    private double run() {
         DijkstraNode<N> dn = all.get(to);
-        while (unvisited.contains(dn)) {
+        while (unvisitedLeft()) {
             calculateNeighbours();
             current = unvisited.peek();
         }
         for (DijkstraNode<N> dn2 : all.values()) {
-            System.out.println(dn2.getN() + ": " + dn2.dist);
+            System.out.println("From: " + this.from + " to: " + dn2.getN() + " = " + dn2.dist);
         }
+        System.out.println("");
         return all.get(to).getDist();
     }
 
     private void calculateNeighbours() {
-        Set<NodeEdge<N, IntegerWeightedEdge>> nexts = graph.getNextNodeEdges(current.getN());
-        for (NodeEdge<N, IntegerWeightedEdge> next : nexts) {
+        Set<NodeEdge<N, DoubleWeightedEdge>> nexts = graph.getNextNodeEdges(current.getN());
+        for (NodeEdge<N, DoubleWeightedEdge> next : nexts) {
             DijkstraNode<N> dn = all.get(next.getNode());
             if (unvisited.contains(dn)) {
-                int newDist = current.getDist() + next.getEdge().getWeight();
+                double newDist = current.getDist() + next.getEdge().getWeight();
                 if (newDist < dn.getDist()) {
                     unvisited.remove(dn);
                     dn.setDist(newDist);
@@ -67,12 +74,16 @@ public class Dijkstra<N> {
         unvisited.remove(current);
     }
 
+    private boolean unvisitedLeft() {
+        return !(unvisited.isEmpty() || unvisited.peek().getDist() == Double.POSITIVE_INFINITY);
+    }
+
     private class DijkstraNode<N> implements Comparable<DijkstraNode<N>> {
 
         private final N n;
-        private int dist;
+        private double dist;
 
-        private DijkstraNode(N n, int dist) {
+        private DijkstraNode(N n, double dist) {
             this.n = n;
             this.dist = dist;
         }
@@ -81,17 +92,17 @@ public class Dijkstra<N> {
             return n;
         }
 
-        private int getDist() {
+        private double getDist() {
             return dist;
         }
 
-        private void setDist(int dist) {
+        private void setDist(double dist) {
             this.dist = dist;
         }
 
         @Override
         public int compareTo(DijkstraNode<N> o) {
-            return Integer.compare(this.dist, o.getDist());
+            return Double.compare(this.dist, o.getDist());
         }
 
     }

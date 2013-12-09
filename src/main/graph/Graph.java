@@ -13,6 +13,13 @@ import java.util.Set;
 public interface Graph<N, E> {
 
     /**
+     * Builds graph from the adj matrix
+     *
+     * @param edges
+     */
+    public void build(int[][] edges);
+
+    /**
      * Adds new node to the graph, duplicates (by means of equals function) are not possible
      *
      * @param n
