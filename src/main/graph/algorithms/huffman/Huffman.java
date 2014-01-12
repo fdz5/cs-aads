@@ -29,8 +29,7 @@ public class Huffman {
     }
 
     public void computeCodeMaps(HuffmanTree bt) {
-        Node root = bt.getRoot();
-        this.prepareCodeMap(root, "");
+        this.prepareCodeMap(bt.getRoot(), "");
     }
 
     public void prepareCodeMap(Node node, String code) {
@@ -39,10 +38,10 @@ public class Huffman {
             decodeMap.put(code, node.getC());
         }
         if (node.getRightChild() != null) {
-            prepareCodeMap(node.getRightChild(), code.concat("1"));
+            prepareCodeMap(node.getRightChild(), code + "1");
         }
         if (node.getLeftChild() != null) {
-            prepareCodeMap(node.getLeftChild(), code.concat("0"));
+            prepareCodeMap(node.getLeftChild(), code + "0");
         }
     }
 

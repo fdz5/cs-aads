@@ -9,9 +9,7 @@ public class HuffmanTree {
     }
 
     private void printTree(int level, Node n) {
-        System.out.println("Level : " + level);
-        System.out.println("Character : " + n.getC());
-        System.out.println("Occurences :" + n.getOccurrences());
+        System.out.println("Level : " + level + ", Character : " + n.getC() + ", Occurences :" + n.getOccurrences());
         if (n.getRightChild() != null) {
             printTree(level + 1, n.getRightChild());
         }
