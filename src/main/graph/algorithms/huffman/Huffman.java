@@ -8,24 +8,29 @@ import java.util.Map.Entry;
 
 public class Huffman {
 
-    private LinkedList<BinaryTree> treeList;
+    private LinkedList<HuffmanTree> treeList;
     private HashMap<Character, String> codeMap;
     private HashMap<String, Character> decodeMap;
 
     public Huffman(Histogram h) {
-        codeMap = new HashMap<Character, String>();
-        decodeMap = new HashMap<String, Character>();
-        treeList = new LinkedList<BinaryTree>();
+        codeMap = new HashMap<>();
+        decodeMap = new HashMap<>();
+        treeList = new LinkedList<>();
         for (Entry<Character, Integer> es : h.getHistogram().entrySet()) {
-            BinaryTree bt = new BinaryTree();
+            HuffmanTree bt = new HuffmanTree();
             bt.setRoot(new Node(es.getKey(), es.getValue()));
             treeList.add(bt);
         }
         Collections.sort(treeList, new ValueComparator());
     }
 
-    public BinaryTree peekLowestOccurenceTree() {
+    public HuffmanTree peekLowestOccurenceTree() {
         return treeList.poll();
+    }
+
+    public void computeCodeMaps(HuffmanTree bt) {
+        Node root = bt.getRoot();
+        this.prepareCodeMap(root, "");
     }
 
     public void prepareCodeMap(Node node, String code) {
@@ -41,16 +46,11 @@ public class Huffman {
         }
     }
 
-    public void computeCodeMaps(BinaryTree bt) {
-        Node root = bt.getRoot();
-        this.prepareCodeMap(root, "");
-    }
-
-    public BinaryTree getHuffmanTree() {
+    public HuffmanTree getHuffmanTree() {
         while (treeList.size() > 1) {
-            BinaryTree abt1 = this.peekLowestOccurenceTree();
-            BinaryTree abt2 = this.peekLowestOccurenceTree();
-            BinaryTree newBt = new BinaryTree();
+            HuffmanTree abt1 = this.peekLowestOccurenceTree();
+            HuffmanTree abt2 = this.peekLowestOccurenceTree();
+            HuffmanTree newBt = new HuffmanTree();
             Node newNode = new Node();
             newNode.setOccurrences(abt1.getRoot().getOccurrences() + abt2.getRoot().getOccurrences());
             newNode.setRightChild(abt1.getRoot());
@@ -62,11 +62,11 @@ public class Huffman {
         return treeList.getFirst();
     }
 
-    public LinkedList<BinaryTree> getTreeList() {
+    public LinkedList<HuffmanTree> getTreeList() {
         return treeList;
     }
 
-    public void setTreeList(LinkedList<BinaryTree> treeList) {
+    public void setTreeList(LinkedList<HuffmanTree> treeList) {
         this.treeList = treeList;
     }
 
@@ -86,8 +86,8 @@ public class Huffman {
         this.decodeMap = decodeMap;
     }
 
-    class ValueComparator implements Comparator<BinaryTree> {
-        public int compare(BinaryTree a, BinaryTree b) {
+    class ValueComparator implements Comparator<HuffmanTree> {
+        public int compare(HuffmanTree a, HuffmanTree b) {
             if (a.getRoot().getOccurrences() > b.getRoot().getOccurrences()) {
                 return 1;
             } else if (a.getRoot().getOccurrences() < b.getRoot().getOccurrences()) {

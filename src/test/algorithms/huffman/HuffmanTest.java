@@ -1,6 +1,6 @@
 package test.algorithms.huffman;
 
-import main.graph.algorithms.huffman.BinaryTree;
+import main.graph.algorithms.huffman.HuffmanTree;
 import main.graph.algorithms.huffman.FileManager;
 import main.graph.algorithms.huffman.Histogram;
 import main.graph.algorithms.huffman.Huffman;
@@ -8,7 +8,6 @@ import main.graph.algorithms.huffman.Huffman;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * User: filip
@@ -29,7 +28,7 @@ public class HuffmanTest {
 //        System.out.println("Base size: " + h.getBase().size());
 //        h.printHistogram();
 
-        BinaryTree huffmanTree = huffman.getHuffmanTree();
+        HuffmanTree huffmanTree = huffman.getHuffmanTree();
 //        huffmanTree.printTree();
         huffman.computeCodeMaps(huffmanTree);
 

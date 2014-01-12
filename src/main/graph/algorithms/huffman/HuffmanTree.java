@@ -1,6 +1,6 @@
 package main.graph.algorithms.huffman;
 
-public class BinaryTree {
+public class HuffmanTree {
 
     private Node root;
 
