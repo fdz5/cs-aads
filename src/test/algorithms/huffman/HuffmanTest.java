@@ -1,60 +1,81 @@
 package test.algorithms.huffman;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.util.HashMap;
+
 import main.graph.algorithms.huffman.FileManager;
 import main.graph.algorithms.huffman.Histogram;
 import main.graph.algorithms.huffman.Huffman;
 import main.graph.algorithms.huffman.HuffmanTree;
-import org.junit.Test;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.TreeMap;
+import org.junit.Test;
 
 /**
  * User: filip Date: 12.01.14 Time: 19:21
  */
 public class HuffmanTest {
 
-    @Test
-    public void histogramTest() throws IOException {
-        Histogram h = new Histogram();
-        FileManager.read(h, "big.txt");
-        h.sort();
-        TreeMap<Character, Integer> tm = h.getHistogram();
-        System.out.println("Tree map size: " + tm.size());
-        System.out.println("Base size: " + h.getBase().size());
-        h.printHistogram();
-    }
+	private String fn = "big.txt";
 
-    @Test
-    public void encodeTest() throws IOException {
-        Histogram h = new Histogram();
-        FileManager.read(h, "big.txt");
-        h.sort();
-        Huffman huffman = new Huffman(h);
+	@Test
+	public void histogramTest() throws IOException {
+		Histogram h = new Histogram();
+		FileManager.read(h, fn);
+		h.sort();
+		h.printHistogram();
+	}
 
-        HuffmanTree huffmanTree = huffman.getHuffmanTree();
-        huffman.computeCodeMaps(huffmanTree);
-        huffmanTree.printTree();
-        HashMap<Character, String> codeMap = huffman.getCodeMap();
-        FileManager.encodeBits(codeMap, "big.txt", "encoded.txt");
-    }
+	@Test
+	public void decodeTest() throws IOException {
+		Histogram h = new Histogram();
+		FileManager.read(h, fn);
+		h.sort();
+		Huffman huffman = new Huffman(h);
 
-    @Test
-    public void decodeTest() throws IOException {
-        String file = "big.txt";
-        Histogram h = new Histogram();
-        FileManager.read(h, file);
-        h.sort();
-        Huffman huffman = new Huffman(h);
+		HuffmanTree huffmanTree = huffman.getHuffmanTree();
+		writeTree(huffmanTree);
+		HuffmanTree huffmanTree2 = readTree();
+		
+		huffman.computeCodeMaps(huffmanTree2);
+		HashMap<Character, String> codeMap = huffman.getCodeMap();
+		HashMap<String, Character> decodeMap = huffman.getDecodeMap();
 
-        HuffmanTree huffmanTree = huffman.getHuffmanTree();
-        huffman.computeCodeMaps(huffmanTree);
-        HashMap<Character, String> codeMap = huffman.getCodeMap();
-        HashMap<String, Character> decodeMap = huffman.getDecodeMap();
+		int offset = FileManager.encodeBits(codeMap, fn, "encoded.txt");
+		FileManager.decodeBits(decodeMap, "encoded.txt", "decoded.txt", offset);
+	}
 
-        int offset = FileManager.encodeBits(codeMap, file, "encoded.txt");
-        FileManager.decodeBits(decodeMap, "encoded.txt", "decoded.txt", offset);
-    }
+	private void writeTree(HuffmanTree tree) throws IOException {
+		OutputStream file = new FileOutputStream("tree.bin");
+		OutputStream buffer = new BufferedOutputStream(file);
+		ObjectOutput output = new ObjectOutputStream(buffer);
+
+		output.writeObject(tree);
+		output.close();
+	}
+	
+	private HuffmanTree readTree() throws IOException {
+		InputStream file = new FileInputStream( "tree.bin" );
+		InputStream buffer = new BufferedInputStream( file );
+		ObjectInput input = new ObjectInputStream ( buffer );
+
+		HuffmanTree tree = null;
+		try {
+			tree = (HuffmanTree)input.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		input.close();
+		return tree;
+	}
 
 }

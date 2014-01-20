@@ -1,8 +1,11 @@
 package main.graph.algorithms.huffman;
 
-public class HuffmanTree {
+import java.io.Serializable;
 
-    private Node root;
+public class HuffmanTree implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	private Node root;
 
     public void printTree() {
         this.printTree(0, root);

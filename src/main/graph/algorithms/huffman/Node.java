@@ -1,8 +1,11 @@
 package main.graph.algorithms.huffman;
 
-public class Node {
+import java.io.Serializable;
 
-    private char c;
+public class Node implements Serializable {
+
+	private static final long serialVersionUID = 2662312197727890825L;
+	private char c;
     private int occurrences;
     private Node leftChild;
     private Node rightChild;

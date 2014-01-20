@@ -24,10 +24,6 @@ public class Huffman {
         Collections.sort(treeList, new ValueComparator());
     }
 
-    public HuffmanTree peekLowestOccurenceTree() {
-        return treeList.poll();
-    }
-
     public void computeCodeMaps(HuffmanTree bt) {
         this.prepareCodeMap(bt.getRoot(), "");
     }
@@ -47,8 +43,8 @@ public class Huffman {
 
     public HuffmanTree getHuffmanTree() {
         while (treeList.size() > 1) {
-            HuffmanTree abt1 = this.peekLowestOccurenceTree();
-            HuffmanTree abt2 = this.peekLowestOccurenceTree();
+            HuffmanTree abt1 = this.treeList.poll();
+            HuffmanTree abt2 = this.treeList.poll();
             HuffmanTree newBt = new HuffmanTree();
             Node newNode = new Node();
             newNode.setOccurrences(abt1.getRoot().getOccurrences() + abt2.getRoot().getOccurrences());
